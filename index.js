@@ -1,6 +1,3 @@
-// picture1.src =
-//   "https://images.unsplash.com/photo-1616531758364-731625b1f273?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80";
-
 const goods = [
   {
     title: "Shirt",
@@ -32,23 +29,49 @@ const goods = [
   {},
 ];
 
-const renderGoodsItem = ({
-  title = "Product",
-  price = "300$",
-  img = "https://images.pexels.com/photos/4068314/pexels-photo-4068314.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
-}) => {
-  return `<div class="goods-item"><img src = "${img}"><h3>${title}</h3><p>${price}</p><button>ДОБАВИТЬ</button></div>`;
-};
+class GoodsItem {
+  constructor({
+    title = "Product",
+    price = "300$",
+    img = "https://images.pexels.com/photos/4068314/pexels-photo-4068314.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+  }) {
+    this.title = title;
+    this.price = price;
+    this.img = img;
+  }
+  render() {
+    return `<div class="goods-item"><img src = "${this.img}"><h3>${this.title}</h3><p>${this.price}</p><button>ДОБАВИТЬ</button></div>`;
+  }
+}
 
-const renderGoodsList = () => {
-  let goodsList = goods
-    .map((item) => {
-      return renderGoodsItem(item);
-    })
-    .join(" ");
-  document.querySelector(".goods-list").innerHTML = goodsList;
-};
+class GoodsList {
+  constructor() {
+    this.goods = goods;
+  }
+  getSum() {
+    return this.goods.reduce((acc, { price }) => acc + price, 0);
+  }
+  render() {
+    const _goods = [...this.goods];
+    const _goodsItems = _goods.map((item) => {
+      const goodsItem = new GoodsItem(item);
+      return goodsItem.render();
+    });
+    document.querySelector(".goods-list").innerHTML = _goodsItems.join("");
+  }
+}
+
+class Basket {
+  setVision() {}
+  render() {}
+}
+class BasketItem {
+  setCount() {}
+  deleteItem() {}
+  render() {}
+}
 
 onload = () => {
-  renderGoodsList(goods);
+  const goodsList = new GoodsList();
+  goodsList.render();
 };
